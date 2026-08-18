@@ -82,6 +82,7 @@ You can invoke the code reviewer directly from your chat prompt using on-demand 
 | **`/code-review lib/presentation/`** | Performs a targeted audit on the presentation layer (memory leaks, controller disposal, const constructors). |
 | **`/code-review lib/data/models/movie_model.dart`** | Performs a deep inspection on a specific file. |
 | **`/code-review git diff`** | Reviews only current staged and uncommitted changes before you commit. |
+| **`/api-to-model <EntityName>`** | Reads `schema_input.json` and instantly generates the pure Domain Entity, Data Model with safe parsing, and serialization Unit Tests. |
 
 ---
 

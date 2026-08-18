@@ -1,0 +1,12 @@
+{
+  "id": 1,
+  "name": "Sample Title",
+  "overview": "A brief overview or description.",
+  "rating": 8.5,
+  "is_active": true,
+  "tags": [
+    "mobile",
+    "flutter",
+    "clean-architecture"
+  ]
+}
