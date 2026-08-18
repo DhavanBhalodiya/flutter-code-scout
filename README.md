@@ -23,11 +23,7 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
    ```text
    /code-review
    ```
-3. To generate models from JSON:
-   ```text
-   /api-to-model UserProfile
-   ```
-4. To resolve any generated ticket, prompt:
+3. To resolve any generated ticket, prompt:
    ```text
    Fix ticket TICKET-002
    ```
@@ -40,15 +36,104 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
 2. Use the native slash commands:
    ```text
    /code-review
-   /api-to-model UserProfile
    /fix-ticket TICKET-002
    ```
 
 ---
 
-## ⚡ Instant Model Generator: `/api-to-model <EntityName>`
+# 🛡️ Part 1: Automated Code Review & Ticket System
 
-Turn any raw API JSON response into production-grade **Clean Architecture Domain Entities**, **Data Models**, and **Unit Tests** in 3 seconds with zero boilerplate.
+## 🏛️ How Code Review Works Under the Hood
+
+```
+                               ┌─────────────────────────────┐
+                               │  User triggers /code-review │
+                               └──────────────┬──────────────┘
+                                              │
+                    ┌─────────────────────────┴─────────────────────────┐
+                    ▼                                                   ▼
+       ┌─────────────────────────┐                         ┌─────────────────────────┐
+       │   Automated Pre-Audit   │                         │ Clean Architecture &    │
+       │ (flutter analyze & test)│                         │ Flutter Quality Audits  │
+       └────────────┬────────────┘                         └────────────┬────────────┘
+                    │                                                   │
+                    └─────────────────────────┬─────────────────────────┘
+                                              ▼
+                               ┌─────────────────────────────┐
+                               │   Interactive Review Report │
+                               │   + Auto-Generated Tickets  │
+                               │   (.tickets/YYYY-MM-DD/)    │
+                               └──────────────┬──────────────┘
+                                              │
+                                              ▼
+                               ┌─────────────────────────────┐
+                               │  "Fix ticket TICKET-001"    │
+                               │  Agent applies fix & tests  │
+                               │  Ticket marked RESOLVED ✅  │
+                               └─────────────────────────────┘
+```
+
+---
+
+## 💻 Available Review Commands
+
+You can invoke the code reviewer directly from your chat prompt:
+
+| Command | Action |
+| :--- | :--- |
+| **`/code-review`** | Runs pre-audit checks (`flutter analyze` + `test`), audits all architectural layers, and outputs a full health score report. |
+| **`/code-review lib/presentation/`** | Performs a targeted audit on the presentation layer (memory leaks, controller disposal, const constructors). |
+| **`/code-review lib/data/models/movie_model.dart`** | Performs a deep inspection on a specific file. |
+| **`/code-review git diff`** | Reviews only current staged and uncommitted changes before you commit. |
+
+---
+
+## 🎫 The Automated Ticket System (`.tickets/`)
+
+Whenever the review agent detects issues (**Blockers**, **Warnings**, or **Suggestions**), it automatically organizes them into date-stamped tickets:
+
+### Directory Structure:
+```text
+.tickets/
+└── 2026-08-18/
+    ├── INDEX.md                                       # Summary table of daily tickets
+    ├── TICKET-001-syntax-error-api-endpoints.md       # 🚨 Blocker (RESOLVED ✅)
+    ├── TICKET-002-safe-cast-get-movie-details.md      # ⚠️ Warning (OPEN)
+    └── TICKET-003-const-optimizations-search-screen.md# 💡 Suggestion (OPEN)
+```
+
+### Ticket Structure:
+Every ticket contains:
+1. **Severity Badge**: `🚨 BLOCKER`, `⚠️ WARNING`, or `💡 SUGGESTION`.
+2. **Status**: `OPEN` ➡️ `RESOLVED` ✅.
+3. **Problem Description**: Root cause and impact.
+4. **Action Plan & Diff**: Exact proposed code changes.
+5. **Verification Command**: Automated validation step (`flutter analyze`, `flutter test`).
+
+---
+
+## 🛠️ How to Resolve Tickets
+
+You don't need to manually write fixes. Simply prompt the agent:
+
+- **Fix a specific ticket**:
+  > *"Fix ticket TICKET-002"* or `/fix-ticket TICKET-002`
+- **Fix all open tickets**:
+  > *"Fix all open tickets in .tickets/2026-08-18/"*
+
+The agent will:
+1. Read the ticket instructions.
+2. Edit the target file with the drop-in fix.
+3. Run `flutter analyze` & `flutter test` to verify zero regression.
+4. Update the ticket status to **`RESOLVED`** ✅.
+
+---
+
+# ⚡ Part 2: Productivity Tools
+
+## 📦 Instant Model Generator: `/api-to-model <EntityName>`
+
+Turn any raw API JSON response into production-grade **Clean Architecture Domain Entities**, **Data Models**, and **Unit Tests** in seconds with zero boilerplate.
 
 ### 📋 3-Step Simple Workflow:
 
@@ -95,92 +180,7 @@ Turn any raw API JSON response into production-grade **Clean Architecture Domain
 
 ---
 
-## 🏛️ How Code Review Works Under the Hood
-
-```
-                               ┌─────────────────────────────┐
-                               │  User triggers /code-review │
-                               └──────────────┬──────────────┘
-                                              │
-                    ┌─────────────────────────┴─────────────────────────┐
-                    ▼                                                   ▼
-       ┌─────────────────────────┐                         ┌─────────────────────────┐
-       │   Automated Pre-Audit   │                         │ Clean Architecture &    │
-       │ (flutter analyze & test)│                         │ Flutter Quality Audits  │
-       └────────────┬────────────┘                         └────────────┬────────────┘
-                    │                                                   │
-                    └─────────────────────────┬─────────────────────────┘
-                                              ▼
-                               ┌─────────────────────────────┐
-                               │   Interactive Review Report │
-                               │   + Auto-Generated Tickets  │
-                               │   (.tickets/YYYY-MM-DD/)    │
-                               └──────────────┬──────────────┘
-                                              │
-                                              ▼
-                               ┌─────────────────────────────┐
-                               │  "Fix ticket TICKET-001"    │
-                               │  Agent applies fix & tests  │
-                               │  Ticket marked RESOLVED ✅  │
-                               └─────────────────────────────┘
-```
-
----
-
-## 💻 Available Review & Generation Commands
-
-| Command | Action |
-| :--- | :--- |
-| **`/code-review`** | Runs pre-audit checks (`flutter analyze` + `test`), audits all architectural layers, and outputs a full health score report. |
-| **`/code-review lib/presentation/`** | Performs a targeted audit on the presentation layer (memory leaks, controller disposal, const constructors). |
-| **`/code-review lib/data/models/movie_model.dart`** | Performs a deep inspection on a specific file. |
-| **`/code-review git diff`** | Reviews only current staged and uncommitted changes before you commit. |
-| **`/api-to-model <EntityName>`** | Reads `schema_input.json` and instantly generates the pure Domain Entity, Data Model with safe parsing, and serialization Unit Tests. |
-
----
-
-## 🎫 The Automated Ticket System (`.tickets/`)
-
-Whenever the review agent detects issues (**Blockers**, **Warnings**, or **Suggestions**), it automatically organizes them into date-stamped tickets:
-
-### Directory Structure:
-```text
-.tickets/
-└── 2026-08-18/
-    ├── INDEX.md                                       # Summary table of daily tickets
-    ├── TICKET-001-syntax-error-api-endpoints.md       # 🚨 Blocker (RESOLVED ✅)
-    ├── TICKET-002-safe-cast-get-movie-details.md      # ⚠️ Warning (OPEN)
-    └── TICKET-003-const-optimizations-search-screen.md# 💡 Suggestion (OPEN)
-```
-
-### Ticket Structure:
-Every ticket contains:
-1. **Severity Badge**: `🚨 BLOCKER`, `⚠️ WARNING`, or `💡 SUGGESTION`.
-2. **Status**: `OPEN` ➡️ `RESOLVED` ✅.
-3. **Problem Description**: Root cause and impact.
-4. **Action Plan & Diff**: Exact proposed code changes.
-5. **Verification Command**: Automated validation step (`flutter analyze`, `flutter test`).
-
----
-
-## 🛠️ How to Resolve Tickets
-
-You don't need to manually write fixes. Simply prompt the agent:
-
-- **Fix a specific ticket**:
-  > *"Fix ticket TICKET-002"* or `/fix-ticket TICKET-002`
-- **Fix all open tickets**:
-  > *"Fix all open tickets in .tickets/2026-08-18/"*
-
-The agent will:
-1. Read the ticket instructions.
-2. Edit the target file with the drop-in fix.
-3. Run `flutter analyze` & `flutter test` to verify zero regression.
-4. Update the ticket status to **`RESOLVED`** ✅.
-
----
-
-## 🔍 Audit Rules & Dimensions
+# 🔍 Part 3: Architecture & Quality Guidelines
 
 The agent audits against the rules configured in [`.agents/rules/flutter_clean_architecture.md`](.agents/rules/flutter_clean_architecture.md):
 
@@ -199,7 +199,7 @@ The agent audits against the rules configured in [`.agents/rules/flutter_clean_a
 
 ---
 
-## 🌐 Cross-Platform Interoperability
+# 🌐 Part 4: Cross-Platform Interoperability
 
 | Tool / Environment | How It Integrates |
 | :--- | :--- |
