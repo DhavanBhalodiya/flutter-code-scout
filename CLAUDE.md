@@ -14,7 +14,7 @@ This file instructs Claude / Claude Code CLI on how to interact with this projec
 
 ---
 
-## 🛡️ Code Review Protocol (`/code-review` or `/review`)
+## 🛡️ Code Review Protocol (`/code-review`)
 
 When asked to review code, run a code review, or execute `/code-review`:
 1. **Pre-Audit**: Run `./.agents/skills/code-reviewer/scripts/audit_code.sh` or `flutter analyze` + `flutter test`.

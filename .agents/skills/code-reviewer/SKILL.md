@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 description: >-
-  Triggered when the user runs `/code-review`, `/review`, or explicitly requests a code review.
+  Triggered when the user runs `/code-review` or explicitly requests a code review.
   Automated code review agent specialized in Flutter, Dart, Clean Architecture, BLoC state management,
   memory safety, performance optimization, and security audits.
 ---
@@ -24,7 +24,7 @@ When requested to review code (a specific file, git diff, PR, or the entire code
 2. Run static analysis: execute `flutter analyze` via `run_command` to detect any syntax, type, or linting errors.
 
 ### Step 2: Layer-by-Layer Architecture Audit
-Audit the code against the [Clean Architecture Rules](file:///.agents/rules/flutter_clean_architecture.md):
+Audit the code against the [Clean Architecture Rules](../../rules/flutter_clean_architecture.md):
 - **Domain Layer**: Check for zero imports from `flutter/material.dart`, `dio`, `sqflite`, or `data/` layer. Verify all entities extend `Equatable`.
 - **Data Layer**: Verify `models/` convert cleanly (`fromJson`, `toJson`, `toEntity`, `fromEntity`). Verify `repositories/` catch low-level exceptions and map them to domain `Failure`s.
 - **Presentation Layer**: Verify widgets delegate all state and side-effects to BLoC events. Verify no direct calls to `data/` datasources.

@@ -1,14 +1,26 @@
+---
+description: Generate Clean Architecture entity, data model, and unit test from JSON
+argument-hint: <EntityName> [file path | inline JSON] (source defaults to schema_input.json)
+---
+
 # /api-to-model Command for Claude Code CLI
 
-When the user runs `/api-to-model <EntityName> [OptionalSource]`:
+**Entity name:** $1
+**Source (optional):** $2
+
+> `$1` is the entity name (e.g. `ActorListResponse`) — required.
+> `$2` is the JSON source — a file path (e.g. `mocks/sample_order.json`) or inline JSON.
+> If `$1` is empty, ask the user for the entity name.
+> If `$2` is empty, read the default input file `schema_input.json`.
 
 ## Step 1: Resolve Source JSON
-1. If no source argument is given, read the default input file: `schema_input.json`.
-2. If a filepath is provided (e.g. `mock.json`), read that file.
-3. If inline JSON is passed, parse the string.
+1. If no source (`$2`) is given, read the default input file: `schema_input.json`.
+2. If a file path is provided, read that file.
+3. If inline JSON is passed, parse the string. (Note: file-based input is more reliable than inline JSON for complex payloads.)
+4. If the payload is a `List`, use the first item `list[0]` to infer the schema.
 
 ## Step 2: Generate Clean Architecture Files
-Generate 3 files for the entity `<EntityName>`:
+Generate 3 files for the entity `$1`:
 
 1. **Domain Entity** (`lib/domain/entities/<snake_case>.dart`):
    - Pure immutable Dart class extending `Equatable`.
