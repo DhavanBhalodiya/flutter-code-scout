@@ -39,8 +39,18 @@ Audit the code against the [Clean Architecture Rules](file:///.agents/rules/flut
 ### Step 4: Security & Secrets Check
 - Ensure no private tokens, API keys, credentials, or sensitive URLs are hardcoded in source files.
 
-### Step 5: Generate Structured Review Report
-Construct the review report using the standardized format below with clear severity badges and drop-in code fix suggestions.
+### Step 5: Generate Actionable Tickets in `.tickets/YYYY-MM-DD/`
+For any Blocker, Warning, or Suggestion identified during review:
+1. Create a dated folder `.tickets/YYYY-MM-DD/` if it does not exist.
+2. Generate individual ticket files `TICKET-XXX-<short-slug>.md` with status `OPEN`, problem description, and proposed code diffs.
+3. Update `.tickets/YYYY-MM-DD/INDEX.md` with the ticket summary table.
+
+### Step 6: Resolving Tickets (`Fix ticket <ID>`)
+When the user asks to fix a ticket (e.g. `Fix ticket TICKET-001` or `Fix all open tickets`):
+1. Locate and read the ticket file in `.tickets/YYYY-MM-DD/`.
+2. Apply the requested code fix using file editing tools.
+3. Run the verification command specified in the ticket (`flutter analyze`, `flutter test`).
+4. Update the ticket status in the markdown file to **`RESOLVED`** with the resolution timestamp.
 
 ---
 

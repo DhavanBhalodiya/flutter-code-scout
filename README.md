@@ -1,69 +1,138 @@
-# Movie Scout (Clean Architecture Flutter App)
+# 🛡️ Flutter Code Review Agent & Ticket System
 
-A production-quality Flutter Movie Application built using **Clean Architecture** (Presentation, Domain, Data, and Core layers), **BLoC State Management**, **Dio**, **GetIt Dependency Injection**, and **Local Persistence**.
-
-Powered by the **100% Free & Open TVMaze API** (`https://api.tvmaze.com`) — zero API keys or authentication required to get started immediately.
+An intelligent, automated **Code Review Pair-Programmer & Ticket Management System** tailored for Flutter & Dart applications. Built with **Antigravity Customizations**, **Clean Architecture Enforcement**, and cross-platform compatibility for **Claude Code CLI**, **Cursor**, and **CI/CD pipelines**.
 
 ---
 
-## 🏛️ Architecture Overview
+## 🚀 Key Highlights
 
-The project is structured according to the principles of Clean Architecture and Dependency Inversion:
+- **Automated Code Auditing**: Audits code for Clean Architecture compliance, memory leaks, performance traps, security leaks, and Dart/Flutter best practices.
+- **Smart Ticket Generation**: Automatically logs issues as structured tickets in `.tickets/YYYY-MM-DD/`.
+- **One-Command Auto-Fixing**: Resolve issues simply by telling the agent `"Fix ticket TICKET-001"`.
+- **Universal Compatibility**: Works seamlessly in **Antigravity IDE (Google)**, **Claude Code CLI (Anthropic)**, and standard terminal/CI environments.
+
+---
+
+## 🏛️ How It Works Under the Hood
 
 ```
-lib/
-├── core/
-│   ├── config/            # AppConfig (baseURL, timeouts, environment config)
-│   ├── di/                # Service locator configuration (GetIt)
-│   ├── error/             # Exception definitions and Failure mappings
-│   ├── network/           # ApiClient (Dio) and TVMaze endpoints
-│   ├── theme/             # Modern cinematic dark theme, typography, colors
-│   └── utils/             # Date formatting and debouncer utilities
-│
-├── domain/                # Pure business logic (zero dependencies on UI or external frameworks)
-│   ├── entities/          # Movie and MovieDetail domain entities
-│   ├── repositories/      # Abstract repository contracts (MovieRepository)
-│   └── usecases/          # Granular use cases (GetPopularMovies, SearchMovies, etc.)
-│
-├── data/                  # Data layer (implements domain interfaces)
-│   ├── datasources/       # Remote (TVMaze API) and Local (SharedPreferences) data sources
-│   ├── models/            # JSON serialization/deserialization models
-│   └── repositories/      # MovieRepositoryImpl coordinating remote & cache
-│
-└── presentation/          # User Interface & State Management
-    ├── blocs/             # PopularMoviesBloc, MovieSearchBloc, MovieDetailBloc, FavoritesBloc
-    ├── screens/           # PopularMoviesScreen, MovieSearchScreen, MovieDetailScreen, FavoritesScreen
-    └── widgets/           # MovieCard, MovieListTile, RatingBadge, CachedImage, ErrorView, EmptyView
+                               ┌─────────────────────────────┐
+                               │  User triggers /code-review │
+                               └──────────────┬──────────────┘
+                                              │
+                    ┌─────────────────────────┴─────────────────────────┐
+                    ▼                                                   ▼
+       ┌─────────────────────────┐                         ┌─────────────────────────┐
+       │   Automated Pre-Audit   │                         │ Clean Architecture &    │
+       │ (flutter analyze & test)│                         │ Flutter Quality Audits  │
+       └────────────┬────────────┘                         └────────────┬────────────┘
+                    │                                                   │
+                    └─────────────────────────┬─────────────────────────┘
+                                              ▼
+                               ┌─────────────────────────────┐
+                               │   Interactive Review Report │
+                               │   + Auto-Generated Tickets  │
+                               │   (.tickets/YYYY-MM-DD/)    │
+                               └──────────────┬──────────────┘
+                                              │
+                                              ▼
+                               ┌─────────────────────────────┐
+                               │  "Fix ticket TICKET-001"    │
+                               │  Agent applies fix & tests  │
+                               │  Ticket marked RESOLVED ✅  │
+                               └─────────────────────────────┘
 ```
 
 ---
 
-## 🚀 Features
+## 💻 How to Run Code Reviews
 
-- **Popular Shows & Movies**: Paginated discovery grid with pull-to-refresh and infinite scroll.
-- **Search**: Real-time debounced search across TVMaze catalog.
-- **Title Details**: Hero backdrop, poster, rating, runtime, release date, genres, overview synopsis, and favorite toggle.
-- **Favorites & Offline Persistence**: Save favorite titles locally using `SharedPreferences`.
-- **Error & Loading States**: Comprehensive error messages, retry mechanisms, shimmer/loading indicators, and empty state graphics.
-- **Dark Cinematic Theme**: Material 3 dark UI tailored for media discovery.
+You can invoke the code reviewer directly from your chat prompt using on-demand commands:
+
+| Command | Action |
+| :--- | :--- |
+| **`/code-review`** | Runs pre-audit checks (`flutter analyze` + `test`), audits all architectural layers, and outputs a full health score report. |
+| **`/code-review lib/presentation/`** | Performs a targeted audit on the presentation layer (memory leaks, controller disposal, const constructors). |
+| **`/code-review lib/data/models/movie_model.dart`** | Performs a deep inspection on a specific file. |
+| **`/code-review git diff`** | Reviews only current staged and uncommitted changes before you commit. |
 
 ---
 
-## ⚡ Quick Start (Zero-Config)
+## 🎫 The Automated Ticket System (`.tickets/`)
 
-Because the app uses the free TVMaze API, **no API keys or tokens are needed**.
+Whenever the review agent detects issues (**Blockers**, **Warnings**, or **Suggestions**), it automatically organizes them into date-stamped tickets:
+
+### Directory Structure:
+```text
+.tickets/
+└── 2026-08-18/
+    ├── INDEX.md                                       # Summary table of daily tickets
+    ├── TICKET-001-syntax-error-api-endpoints.md       # 🚨 Blocker
+    ├── TICKET-002-safe-cast-get-movie-details.md      # ⚠️ Warning
+    └── TICKET-003-const-optimizations-search-screen.md# 💡 Suggestion
+```
+
+### Ticket Structure:
+Every ticket contains:
+1. **Severity Badge**: `🚨 BLOCKER`, `⚠️ WARNING`, or `💡 SUGGESTION`.
+2. **Status**: `OPEN` ➡️ `RESOLVED` ✅.
+3. **Problem Description**: Root cause and impact.
+4. **Action Plan & Diff**: Exact proposed code changes.
+5. **Verification Command**: Automated validation step (`flutter analyze`, `flutter test`).
+
+---
+
+## 🛠️ How to Resolve Tickets
+
+You don't need to manually write fixes. Simply prompt the agent:
+
+- **Fix a specific ticket**:
+  > *"Fix ticket TICKET-001"*
+- **Fix all open tickets**:
+  > *"Fix all open tickets in .tickets/2026-08-18/"*
+
+The agent will:
+1. Read the ticket instructions.
+2. Edit the target file with the drop-in fix.
+3. Run `flutter analyze` & `flutter test` to verify zero regression.
+4. Update the ticket status to **`RESOLVED`** ✅.
+
+---
+
+## 🔍 Audit Rules & Dimensions
+
+The agent audits against the rules configured in [`.agents/rules/flutter_clean_architecture.md`](.agents/rules/flutter_clean_architecture.md):
+
+### 1. Clean Architecture Layer Purity
+- **Domain Layer (`lib/domain/`)**: Pure Dart only. Zero imports from `flutter/material.dart`, `dio`, `sqflite`, or `data/`. All entities extend `Equatable`.
+- **Data Layer (`lib/data/`)**: Robust JSON serialization (`fromJson`/`toJson`), exception-to-failure mappings, and decoupled datasources.
+- **Presentation Layer (`lib/presentation/`)**: BLoC state management with immutable states/events and zero business logic in widgets.
+
+### 2. Flutter Performance & Memory Safety
+- **Leak Prevention**: Strict disposal checks for `TextEditingController`, `ScrollController`, `AnimationController`, `StreamSubscription`, and `Timer`.
+- **Rebuild Optimization**: Enforces `const` constructors on immutable subtrees and avoids computations in `build()`.
+
+### 3. Security & Resilience
+- Flags hardcoded secrets, credentials, or insecure storage.
+- Ensures all async operations handle network timeouts and server errors gracefully.
+
+---
+
+## 🌐 Cross-Platform Interoperability
+
+| Tool | Configuration |
+| :--- | :--- |
+| **Antigravity IDE** | Discovers [`.agents/skills/code-reviewer/`](.agents/skills/code-reviewer/SKILL.md) and [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md). |
+| **Claude Code CLI** | Reads [`CLAUDE.md`](CLAUDE.md) at the project root for review triggers and rules. |
+| **Terminal / CI/CD** | Runs [`./.agents/skills/code-reviewer/scripts/audit_code.sh`](.agents/skills/code-reviewer/scripts/audit_code.sh) directly. |
+
+---
+
+## 🧪 Verification & Audit Script
+
+You can manually run the pre-audit suite in your terminal anytime:
 
 ```bash
-# Run the app on any connected device or simulator
-flutter run
-```
-
-Or simply press **F5** in VS Code / Antigravity IDE.
-
----
-
-## 🧪 Static Analysis & Verification
-
-```bash
-flutter analyze
+# Run automated pre-audit checks
+./.agents/skills/code-reviewer/scripts/audit_code.sh
 ```

@@ -22,11 +22,10 @@ When asked to review code, run a code review, or execute `/code-review`:
    - **Data**: Models map to entities (`fromJson`, `toJson`), repositories catch low-level exceptions and map them to `Failure`s.
    - **Presentation**: BLoC pattern, zero business logic in widgets, immutable states & events.
    - **Performance**: Dispose all controllers/streams/timers, use `const` constructors on static subtrees.
-3. **Format Output**: Follow the report template in [.agents/skills/code-reviewer/templates/review_template.md](.agents/skills/code-reviewer/templates/review_template.md) using severity classifications:
-   - 🚨 **[BLOCKER]**: Architecture violations, memory leaks, security issues.
-   - ⚠️ **[WARNING]**: Rebuild performance, unhandled edge cases.
-   - 💡 **[SUGGESTION]**: Readability, missing `const`.
-   - ✅ **[GOOD PRACTICE]**: Clean code patterns.
+3. **Format Output & Create Tickets**:
+   - Follow the report template in [.agents/skills/code-reviewer/templates/review_template.md](.agents/skills/code-reviewer/templates/review_template.md).
+   - Automatically write actionable tickets to `.tickets/YYYY-MM-DD/TICKET-XXX-<name>.md` with status `OPEN`.
+4. **Resolve Tickets**: When the user requests `Fix ticket <ID>` or `Fix all open tickets`, inspect the ticket file, execute the code fix, run tests, and mark the ticket `RESOLVED`.
 
 ---
 
