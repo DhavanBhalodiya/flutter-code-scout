@@ -8,8 +8,35 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
 
 - **Automated Code Auditing**: Audits code for Clean Architecture compliance, memory leaks, performance traps, security leaks, and Dart/Flutter best practices.
 - **Smart Ticket Generation**: Automatically logs issues as structured tickets in `.tickets/YYYY-MM-DD/`.
-- **One-Command Auto-Fixing**: Resolve issues simply by telling the agent `"Fix ticket TICKET-001"`.
+- **One-Command Auto-Fixing**: Resolve issues simply by telling the agent `"Fix ticket TICKET-001"` or running `/fix-ticket TICKET-001`.
 - **Universal Compatibility**: Works seamlessly in **Antigravity IDE (Google)**, **Claude Code CLI (Anthropic)**, and standard terminal/CI environments.
+- **Bundled Sample Project**: Comes pre-configured with a Clean Architecture media discovery app powered by the **100% free, keyless TVMaze API** for immediate testing.
+
+---
+
+## ⚡ Quickstart
+
+### 🤖 If using Google Antigravity IDE:
+1. Open this repository in Antigravity.
+2. In the AI chat, run:
+   ```text
+   /code-review
+   ```
+3. To resolve any generated ticket, prompt:
+   ```text
+   Fix ticket TICKET-002
+   ```
+
+### 💻 If using Anthropic Claude Code CLI:
+1. In your terminal, navigate to the folder and launch Claude:
+   ```bash
+   claude
+   ```
+2. Use the native slash commands:
+   ```text
+   /code-review
+   /fix-ticket TICKET-002
+   ```
 
 ---
 
@@ -45,7 +72,7 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
 
 ---
 
-## 💻 How to Run Code Reviews
+## 💻 Available Review Commands
 
 You can invoke the code reviewer directly from your chat prompt using on-demand commands:
 
@@ -67,9 +94,9 @@ Whenever the review agent detects issues (**Blockers**, **Warnings**, or **Sugge
 .tickets/
 └── 2026-08-18/
     ├── INDEX.md                                       # Summary table of daily tickets
-    ├── TICKET-001-syntax-error-api-endpoints.md       # 🚨 Blocker
-    ├── TICKET-002-safe-cast-get-movie-details.md      # ⚠️ Warning
-    └── TICKET-003-const-optimizations-search-screen.md# 💡 Suggestion
+    ├── TICKET-001-syntax-error-api-endpoints.md       # 🚨 Blocker (RESOLVED ✅)
+    ├── TICKET-002-safe-cast-get-movie-details.md      # ⚠️ Warning (OPEN)
+    └── TICKET-003-const-optimizations-search-screen.md# 💡 Suggestion (OPEN)
 ```
 
 ### Ticket Structure:
@@ -87,7 +114,7 @@ Every ticket contains:
 You don't need to manually write fixes. Simply prompt the agent:
 
 - **Fix a specific ticket**:
-  > *"Fix ticket TICKET-001"*
+  > *"Fix ticket TICKET-002"* or `/fix-ticket TICKET-002`
 - **Fix all open tickets**:
   > *"Fix all open tickets in .tickets/2026-08-18/"*
 
@@ -120,11 +147,11 @@ The agent audits against the rules configured in [`.agents/rules/flutter_clean_a
 
 ## 🌐 Cross-Platform Interoperability
 
-| Tool | Configuration |
+| Tool / Environment | How It Integrates |
 | :--- | :--- |
-| **Antigravity IDE** | Discovers [`.agents/skills/code-reviewer/`](.agents/skills/code-reviewer/SKILL.md) and [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md). |
-| **Claude Code CLI** | Reads [`CLAUDE.md`](CLAUDE.md) at the project root for review triggers and rules. |
-| **Terminal / CI/CD** | Runs [`./.agents/skills/code-reviewer/scripts/audit_code.sh`](.agents/skills/code-reviewer/scripts/audit_code.sh) directly. |
+| **Antigravity IDE (Google)** | Automatically loads [`.agents/skills/code-reviewer/`](.agents/skills/code-reviewer/SKILL.md) and [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md). |
+| **Claude Code CLI (Anthropic)** | Reads [`CLAUDE.md`](CLAUDE.md) and uses native slash commands in [`.claude/commands/`](.claude/commands/). |
+| **Terminal / CI/CD Pipelines** | Directly executes [`./.agents/skills/code-reviewer/scripts/audit_code.sh`](.agents/skills/code-reviewer/scripts/audit_code.sh). |
 
 ---
 
