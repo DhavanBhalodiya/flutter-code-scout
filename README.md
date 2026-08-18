@@ -9,6 +9,7 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
 - **Automated Code Auditing**: Audits code for Clean Architecture compliance, memory leaks, performance traps, security leaks, and Dart/Flutter best practices.
 - **Smart Ticket Generation**: Automatically logs issues as structured tickets in `.tickets/YYYY-MM-DD/`.
 - **One-Command Auto-Fixing**: Resolve issues simply by telling the agent `"Fix ticket TICKET-001"` or running `/fix-ticket TICKET-001`.
+- **Instant Model Generator (`/api-to-model`)**: Paste JSON into `schema_input.json` and generate pure Domain Entities, Data Models, and Unit Tests in seconds.
 - **Universal Compatibility**: Works seamlessly in **Antigravity IDE (Google)**, **Claude Code CLI (Anthropic)**, and standard terminal/CI environments.
 - **Bundled Sample Project**: Comes pre-configured with a Clean Architecture media discovery app powered by the **100% free, keyless TVMaze API** for immediate testing.
 
@@ -22,7 +23,11 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
    ```text
    /code-review
    ```
-3. To resolve any generated ticket, prompt:
+3. To generate models from JSON:
+   ```text
+   /api-to-model UserProfile
+   ```
+4. To resolve any generated ticket, prompt:
    ```text
    Fix ticket TICKET-002
    ```
@@ -35,12 +40,62 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
 2. Use the native slash commands:
    ```text
    /code-review
+   /api-to-model UserProfile
    /fix-ticket TICKET-002
    ```
 
 ---
 
-## 🏛️ How It Works Under the Hood
+## ⚡ Instant Model Generator: `/api-to-model <EntityName>`
+
+Turn any raw API JSON response into production-grade **Clean Architecture Domain Entities**, **Data Models**, and **Unit Tests** in 3 seconds with zero boilerplate.
+
+### 📋 3-Step Simple Workflow:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 1. Paste API JSON response into:                            │
+│    `schema_input.json`                                      │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. Run in Chat / CLI:                                       │
+│    `/api-to-model <EntityName>`                             │
+│    (e.g., `/api-to-model ActorListResponse`)                │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. Automatically Generated (0 Boilerplate):                 │
+│    ├── lib/domain/entities/<name>.dart (Pure & Equatable)   │
+│    ├── lib/data/models/<name>_model.dart (Null-Safe JSON)   │
+│    └── test/data/models/<name>_model_test.dart (Unit Tests) │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 💡 Why this is a Superpower:
+- **🛡️ 100% Crash-Proof Type Safety**: Automatically maps `int` vs `double` safely using `(json['key'] as num?)?.toDouble()`. No more runtime `TypeError` crashes.
+- **🧹 Auto-Sanitization**: Strips HTML tags from API strings automatically.
+- **🔗 Deep Nested Maps**: Flattens nested JSON objects (e.g. `network.country.name`) into clean, null-safe properties.
+- **🧪 100% Test Coverage**: Creates ready-to-run serialization tests (`flutter test`) automatically.
+
+### 💻 Usage Examples:
+
+```bash
+# Option 1: Reads schema_input.json by default (Easiest & Recommended)
+/api-to-model ActorListResponse
+
+# Option 2: Reads a custom mock file path
+/api-to-model OrderDetails assets/mocks/sample_order.json
+
+# Option 3: Quick inline JSON
+/api-to-model Product {"id": 101, "title": "Headphones", "price": 99.99}
+```
+
+---
+
+## 🏛️ How Code Review Works Under the Hood
 
 ```
                                ┌─────────────────────────────┐
@@ -72,9 +127,7 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
 
 ---
 
-## 💻 Available Review Commands
-
-You can invoke the code reviewer directly from your chat prompt using on-demand commands:
+## 💻 Available Review & Generation Commands
 
 | Command | Action |
 | :--- | :--- |
@@ -150,7 +203,7 @@ The agent audits against the rules configured in [`.agents/rules/flutter_clean_a
 
 | Tool / Environment | How It Integrates |
 | :--- | :--- |
-| **Antigravity IDE (Google)** | Automatically loads [`.agents/skills/code-reviewer/`](.agents/skills/code-reviewer/SKILL.md) and [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md). |
+| **Antigravity IDE (Google)** | Automatically loads [`.agents/skills/code-reviewer/`](.agents/skills/code-reviewer/SKILL.md), [`.agents/skills/api-to-model/`](.agents/skills/api-to-model/SKILL.md), and [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md). |
 | **Claude Code CLI (Anthropic)** | Reads [`CLAUDE.md`](CLAUDE.md) and uses native slash commands in [`.claude/commands/`](.claude/commands/). |
 | **Terminal / CI/CD Pipelines** | Directly executes [`./.agents/skills/code-reviewer/scripts/audit_code.sh`](.agents/skills/code-reviewer/scripts/audit_code.sh). |
 
