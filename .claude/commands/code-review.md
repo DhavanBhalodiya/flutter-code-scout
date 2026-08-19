@@ -15,10 +15,16 @@ argument-hint: [path | file | "git diff"] (optional; defaults to whole codebase)
 Execute the following workflow:
 
 ## Step 1: Pre-Audit Checks
-Run the automated pre-audit script:
+Run the automated pre-audit script. **Forward the review scope** so `flutter analyze` /
+`flutter test` only run against the requested subtree:
 ```bash
+# Path or file scope → pass it through so analyze/test are scoped:
+./.agents/skills/code-reviewer/scripts/audit_code.sh lib/presentation/screens
+# Whole-codebase or `git diff` review → run with no argument:
 ./.agents/skills/code-reviewer/scripts/audit_code.sh
 ```
+Pass `$ARGUMENTS` as the scope when it is a path or file; omit it when the scope is empty or
+`git diff` (the script accepts an optional `[SCOPE]` path).
 
 ## Step 2: Architecture & Quality Review
 Inspect the target code (per the scope above) against the guidelines in `.agents/rules/flutter_clean_architecture.md`:
@@ -31,6 +37,8 @@ Inspect the target code (per the scope above) against the guidelines in `.agents
    - Use `const` on static widget subtrees.
 3. **Security**:
    - No hardcoded secrets, keys, or sensitive credentials.
+4. **Internationalization** (see rules §5):
+   - No hardcoded user-facing strings; locale-aware date/number formatting via `intl`; directional layout (`start`/`end`).
 
 ## Step 3: Generate Review Report & Create Tickets
 1. Output the structured review report using the single source-of-truth template at

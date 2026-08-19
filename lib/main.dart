@@ -9,6 +9,7 @@ import 'presentation/blocs/movie_search/movie_search_bloc.dart';
 import 'presentation/blocs/popular_movies/popular_movies_bloc.dart';
 import 'presentation/blocs/popular_movies/popular_movies_event.dart';
 import 'presentation/screens/home_screen.dart';
+import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,11 +28,10 @@ class MovieScoutApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PopularMoviesBloc>(
-          create: (_) => sl<PopularMoviesBloc>()..add(const FetchPopularMovies()),
+          create: (_) =>
+              sl<PopularMoviesBloc>()..add(const FetchPopularMovies()),
         ),
-        BlocProvider<MovieSearchBloc>(
-          create: (_) => sl<MovieSearchBloc>(),
-        ),
+        BlocProvider<MovieSearchBloc>(create: (_) => sl<MovieSearchBloc>()),
         BlocProvider<FavoritesBloc>(
           create: (_) => sl<FavoritesBloc>()..add(const FetchFavorites()),
         ),
@@ -40,6 +40,8 @@ class MovieScoutApp extends StatelessWidget {
         title: AppConfig.appName,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: const HomeScreen(),
       ),
     );

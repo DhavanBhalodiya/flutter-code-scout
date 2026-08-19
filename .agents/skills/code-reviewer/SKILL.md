@@ -19,9 +19,9 @@ When requested to review code (a specific file, git diff, PR, or the entire code
 ### Step 1: Scope & Diff Analysis
 1. Determine the target files:
    - If reviewing uncommitted changes: inspect `git diff` or `git status`.
-   - If reviewing specific files: read the target files completely using `view_file`.
+   - If reviewing specific files: read the target files completely using the `Read` tool.
    - If reviewing a whole feature: inspect all files in the feature slice across layers (`domain/`, `data/`, `presentation/`, `core/`).
-2. Run static analysis: execute `flutter analyze` via `run_command` to detect any syntax, type, or linting errors.
+2. Run static analysis: execute `flutter analyze` via the `Bash` tool to detect any syntax, type, or linting errors.
 
 ### Step 2: Layer-by-Layer Architecture Audit
 Audit the code against the [Clean Architecture Rules](../../rules/flutter_clean_architecture.md):
@@ -38,6 +38,13 @@ Audit the code against the [Clean Architecture Rules](../../rules/flutter_clean_
 
 ### Step 4: Security & Secrets Check
 - Ensure no private tokens, API keys, credentials, or sensitive URLs are hardcoded in source files.
+
+### Step 4b: Internationalization & Localization Check
+Audit the presentation layer against [Clean Architecture Rules §5](../../rules/flutter_clean_architecture.md):
+- No hardcoded user-facing strings in widgets (route through `AppLocalizations` / `.arb`).
+- `MaterialApp` declares `localizationsDelegates` + `supportedLocales` (once l10n is adopted).
+- Dates/numbers/currency formatted via `intl` (`DateFormat`, `NumberFormat`), not manual strings.
+- Directional layout (`EdgeInsetsDirectional`, `start`/`end`) instead of `left`/`right`.
 
 ### Step 5: Generate Actionable Tickets in `.tickets/YYYY-MM-DD/`
 For any Blocker, Warning, or Suggestion identified during review:
@@ -56,46 +63,18 @@ When the user asks to fix a ticket (e.g. `Fix ticket TICKET-001` or `Fix all ope
 
 ## 📊 Severity Classification
 
-- 🚨 **[BLOCKER]**: Architectural boundary violation, memory leak, unhandled crash, or security vulnerability. Must be resolved before merging.
-- ⚠️ **[WARNING]**: Inefficient widget rebuild, missing error state, unhandled edge case, or potential type mismatch.
-- 💡 **[SUGGESTION]**: Readability improvement, missing `const`, documentation comment, or minor refactoring opportunity.
-- ✅ **[GOOD PRACTICE]**: Commendation highlighting clean, well-tested, or decoupled code.
+These labels map 1:1 to the scoring rubric in the report template
+(`templates/review_template.md`): Blocker −20, Warning −8, Suggestion −2, Commendation 0.
+
+- 🚨 **Blocker**: Architectural boundary violation, memory leak, unhandled crash, or security vulnerability. Must be resolved before merging.
+- ⚠️ **Warning**: Inefficient widget rebuild, missing error state, unhandled edge case, potential type mismatch, or hardcoded user-facing string.
+- 💡 **Suggestion**: Readability improvement, missing `const`, documentation comment, or minor refactoring opportunity.
+- ✅ **Commendation**: Highlight of clean, well-tested, or decoupled code.
 
 ---
 
 ## 📝 Review Report Template
 
-```markdown
-# 🛡️ Code Review Report
-**Scope**: `<Files or Feature Reviewed>`
-**Overall Health Score**: `<Score>/100 (<Grade: A+, A, B, C, F>)`
-
----
-
-### 🚨 Blockers (Must Fix)
-- **File**: `[file_basename](file:///path/to/file#L10)`
-  - **Issue**: Description of the blocker.
-  - **Why it matters**: Explanation of impact.
-  - **Suggested Fix**:
-    ```dart
-    // Proposed drop-in code fix
-    ```
-
----
-
-### ⚠️ Warnings (Review Needed)
-- **File**: `[file_basename](file:///path/to/file#L25)`
-  - **Issue**: Description of warning.
-  - **Suggested Fix**: ...
-
----
-
-### 💡 Suggestions & Optimizations
-- **File**: `[file_basename](file:///path/to/file#L50)`
-  - **Optimization**: Add `const` constructor / extract sub-widget.
-
----
-
-### ✅ Commendations & Strengths
-- Highlights of good practices found in the code.
-```
+Use the report format **and** the deterministic health-score rubric defined in the single
+source of truth: [`templates/review_template.md`](templates/review_template.md).
+Do not maintain a second copy of the template here.

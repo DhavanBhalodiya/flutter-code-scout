@@ -1,0 +1,44 @@
+{
+  "@@locale": "en",
+
+  "searchTitle": "Search Movies",
+  "@searchTitle": {
+    "description": "AppBar title for the movie search screen."
+  },
+
+  "searchHint": "Search by movie title...",
+  "@searchHint": {
+    "description": "Placeholder hint text inside the search input field."
+  },
+
+  "searchEmptyTitle": "Explore Movies",
+  "@searchEmptyTitle": {
+    "description": "Title shown before the user has typed any search query."
+  },
+
+  "searchEmptyBody": "Type a title above to search through thousands of movies.",
+  "@searchEmptyBody": {
+    "description": "Body text shown before the user has typed any search query."
+  },
+
+  "searchLoading": "Searching movies...",
+  "@searchLoading": {
+    "description": "Message shown while search results are loading."
+  },
+
+  "searchNoResultsTitle": "No Results Found",
+  "@searchNoResultsTitle": {
+    "description": "Title shown when a search returns no movies."
+  },
+
+  "searchNoResultsBody": "We couldn't find any movies matching \"{query}\".",
+  "@searchNoResultsBody": {
+    "description": "Body shown when a search returns no movies; includes the searched query.",
+    "placeholders": {
+      "query": {
+        "type": "String",
+        "example": "Inception"
+      }
+    }
+  }
+}

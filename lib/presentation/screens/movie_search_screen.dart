@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../l10n/app_localizations.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_typography.dart';
 import '../../core/utils/debounce.dart';
@@ -27,7 +28,9 @@ class MovieSearchScreen extends StatefulWidget {
 class _MovieSearchScreenState extends State<MovieSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  final Debouncer _debouncer = Debouncer(duration: const Duration(milliseconds: 500));
+  final Debouncer _debouncer = Debouncer(
+    duration: const Duration(milliseconds: 500),
+  );
 
   @override
   void initState() {
@@ -70,10 +73,11 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Search Movies', style: AppTypography.titleLarge),
+        title: Text(l10n.searchTitle, style: AppTypography.titleLarge),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(68),
           child: Padding(
@@ -83,7 +87,7 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
               onChanged: _onQueryChanged,
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
-                hintText: 'Search by movie title...',
+                hintText: l10n.searchHint,
                 prefixIcon: const Icon(Icons.search_rounded),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
@@ -99,25 +103,25 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
       body: BlocBuilder<MovieSearchBloc, MovieSearchState>(
         builder: (context, state) {
           if (state is MovieSearchInitial) {
-            return const EmptyView(
+            return EmptyView(
               icon: Icons.search_rounded,
-              title: 'Explore Movies',
-              message: 'Type a title above to search through thousands of movies.',
+              title: l10n.searchEmptyTitle,
+              message: l10n.searchEmptyBody,
             );
           } else if (state is MovieSearchLoading) {
-            return const LoadingIndicator(message: 'Searching movies...');
+            return LoadingIndicator(message: l10n.searchLoading);
           } else if (state is MovieSearchEmpty) {
             return EmptyView(
               icon: Icons.search_off_rounded,
-              title: 'No Results Found',
-              message: 'We couldn\'t find any movies matching "${state.query}".',
+              title: l10n.searchNoResultsTitle,
+              message: l10n.searchNoResultsBody(state.query),
             );
           } else if (state is MovieSearchError) {
             return ErrorView(
               message: state.message,
-              onRetry: () => context
-                  .read<MovieSearchBloc>()
-                  .add(SearchQueryChanged(state.query)),
+              onRetry: () => context.read<MovieSearchBloc>().add(
+                SearchQueryChanged(state.query),
+              ),
             );
           } else if (state is MovieSearchLoaded) {
             return ListView.separated(
@@ -161,23 +165,23 @@ class _MovieSearchScreenState extends State<MovieSearchScreen> {
 
     // Update in Search Bloc
     context.read<MovieSearchBloc>().add(
-          UpdateSearchMovieFavoriteStatus(
-            movieId: movie.id,
-            isFavorite: newFavoriteStatus,
-          ),
-        );
+      UpdateSearchMovieFavoriteStatus(
+        movieId: movie.id,
+        isFavorite: newFavoriteStatus,
+      ),
+    );
 
     // Sync with Popular Bloc
     context.read<PopularMoviesBloc>().add(
-          UpdateMovieFavoriteStatus(
-            movieId: movie.id,
-            isFavorite: newFavoriteStatus,
-          ),
-        );
+      UpdateMovieFavoriteStatus(
+        movieId: movie.id,
+        isFavorite: newFavoriteStatus,
+      ),
+    );
 
     // Persist in Favorites Bloc
     context.read<FavoritesBloc>().add(
-          ToggleFavoriteMovie(movie.copyWith(isFavorite: newFavoriteStatus)),
-        );
+      ToggleFavoriteMovie(movie.copyWith(isFavorite: newFavoriteStatus)),
+    );
   }
 }

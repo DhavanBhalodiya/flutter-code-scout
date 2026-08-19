@@ -10,6 +10,8 @@ description: >-
 
 Automated generator that converts JSON payloads into production-grade, Clean Architecture **Domain Entities**, **Data Models**, and **Unit Tests** for Flutter applications.
 
+> ⚡ **Token discipline:** When invoked via `/api-to-model`, this workflow runs inside a dedicated subagent so the large source JSON and generated code never enter the main conversation (see `.claude/commands/api-to-model.md`). Regardless of how it is triggered, **never read the whole source file into context** — sample one representative record as described in Step 1.
+
 ---
 
 ## 🎯 Command Syntax
@@ -26,9 +28,21 @@ Automated generator that converts JSON payloads into production-grade, Clean Arc
 
 ## 🔄 Generation Workflow
 
-### Step 1: Read & Normalize JSON
-1. If argument is omitted or is a filename, read the file (default: `schema_input.json`).
-2. Parse JSON. If the payload is a `List`, extract the first item `list[0]` to infer the schema.
+### Step 1: Sample the JSON — never read the whole file
+The source often contains many near-identical records, but the schema is fully defined by **one**. Reading the entire file wastes tokens (a 30-record fixture is ~15k tokens for zero extra schema information). Extract a single representative record with a shell command and read **only that output** — do not open the source file with the Read tool.
+
+1. **Resolve the source:**
+   - Omitted / no file arg → default file `schema_input.json`.
+   - A file path → that file.
+   - Inline JSON → write it to `/tmp/api_to_model_input.json` first, then sample it the same way.
+2. **Extract ONE record with `jq`** (preferred). This one expression covers all three common shapes — a bare array, a wrapper object whose value is an array (paginated responses like `{"users": [...], "total": ...}`), and a single object:
+   ```bash
+   jq 'if type=="array" then .[0]
+       elif ([.[]?|select(type=="array")]|length)>0 then [.[]?|select(type=="array")][0][0]
+       else . end' <SOURCE_FILE>
+   ```
+   Read only this single-record output to infer the schema. (If the first top-level array is not the record list, adjust the path, e.g. `jq '.data[0]' <SOURCE_FILE>`.)
+3. **Fallback if `jq` is unavailable:** `head -c 4000 <SOURCE_FILE>` to detect the shape, then read a bounded slice — still never the whole file.
 
 ### Step 2: Inferred Type Mapping & Defensive Parsing
 Apply Senior-Engineer defensive casting in `fromJson`:

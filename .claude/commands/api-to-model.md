@@ -10,36 +10,20 @@ argument-hint: <EntityName> [file path | inline JSON] (source defaults to schema
 
 > `$1` is the entity name (e.g. `ActorListResponse`) — required.
 > `$2` is the JSON source — a file path (e.g. `mocks/sample_order.json`) or inline JSON.
-> If `$1` is empty, ask the user for the entity name.
-> If `$2` is empty, read the default input file `schema_input.json`.
+> If `$1` is empty, ask the user for the entity name **before** launching the subagent.
+> If `$2` is empty, the default input file `schema_input.json` is used.
 
-## Step 1: Resolve Source JSON
-1. If no source (`$2`) is given, read the default input file: `schema_input.json`.
-2. If a file path is provided, read that file.
-3. If inline JSON is passed, parse the string. (Note: file-based input is more reliable than inline JSON for complex payloads.)
-4. If the payload is a `List`, use the first item `list[0]` to infer the schema.
+## Step 1: Delegate generation to a subagent (keep the main context clean)
+Do **NOT** read the JSON or generate files in this main conversation. The source file can be large (many near-identical records) and the generated Dart is ~1,000 lines — none of that should pollute the main context.
 
-## Step 2: Generate Clean Architecture Files
-Generate 3 files for the entity `$1`:
+Launch a **single** subagent (Agent tool, `subagent_type: general-purpose`) with a task that says:
 
-1. **Domain Entity** (`lib/domain/entities/<snake_case>.dart`):
-   - Pure immutable Dart class extending `Equatable`.
-   - `copyWith()` method.
-   - Zero UI/framework imports.
+- Read and follow `.agents/skills/api-to-model/SKILL.md` exactly.
+- Entity name: `$1`. Source: `$2` (default `schema_input.json`).
+- **Sample ONE representative record** using the `jq` command in SKILL.md Step 1 — do **not** read the whole source file into context.
+- Generate the 3 Clean Architecture files: the Domain Entity (`lib/domain/entities/<snake_case>.dart`), the Data Model (`lib/data/models/<snake_case>_model.dart`), and the Serialization Unit Test (`test/data/models/<snake_case>_model_test.dart`).
+- Run `flutter analyze` and `flutter test`.
+- **Return ONLY a compact summary:** the 3 generated file paths + the `analyze`/`test` pass-fail counts. Do **NOT** paste file contents or the source JSON back.
 
-2. **Data Model** (`lib/data/models/<snake_case>_model.dart`):
-   - Extends the domain entity.
-   - `factory <EntityName>Model.fromJson(Map<String, dynamic> json)` with safe casting (`num?` to `double`, null checks).
-   - `Map<String, dynamic> toJson()`.
-   - `toEntity()` and `factory <EntityName>Model.fromEntity(...)`.
-
-3. **Serialization Unit Test** (`test/data/models/<snake_case>_model_test.dart`):
-   - Validates `fromJson`, `toJson`, and domain entity conversion.
-
-## Step 3: Run Verification
-Run:
-```bash
-flutter analyze
-flutter test
-```
-Notify the user with the generated file paths and verification results.
+## Step 2: Relay the result
+Report the subagent's summary to the user: the generated file paths and the verification results. If verification failed, surface the failing output the subagent reported.

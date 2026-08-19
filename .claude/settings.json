@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter analyze)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter test)",
+      "Bash(flutter test:*)",
+      "Bash(flutter pub get)",
+      "Bash(dart format:*)",
+      "Bash(dart fix:*)",
+      "Bash(./.agents/skills/code-reviewer/scripts/audit_code.sh)",
+      "Bash(./.agents/skills/code-reviewer/scripts/audit_code.sh:*)",
+      "Bash(./.agents/skills/code-reviewer/scripts/sync_tickets.sh:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/format_dart.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

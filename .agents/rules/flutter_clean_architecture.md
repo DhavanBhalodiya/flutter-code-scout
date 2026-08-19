@@ -51,3 +51,42 @@ This rule document defines architectural constraints, code style standards, and 
 ## 4. Security & Sensitive Data
 - Do NOT hardcode API keys, passwords, secrets, or bearer tokens in code or commit them to VCS.
 - Use compile-time environment definitions (`--dart-define`) or secure config loaders.
+
+---
+
+## 5. Internationalization & Localization (i18n / l10n)
+
+A production-grade Flutter app must be translation-ready. Review the following:
+
+- **No hardcoded user-facing strings**: Text rendered to the user (labels, buttons, error
+  messages, empty/loading states, tooltips, `Semantics` labels) must NOT be inline string
+  literals in widgets. Route them through `AppLocalizations` / `.arb` resources.
+  - _Exempt_: log messages, keys, asset paths, and other non-user-facing strings.
+- **Localization wiring**: Once l10n is adopted, `MaterialApp` must declare
+  `localizationsDelegates` (including `AppLocalizations.delegate` and the Flutter delegates)
+  and `supportedLocales`.
+- **Locale-aware formatting**: Format dates, numbers, and currency only via `intl`
+  (`DateFormat`, `NumberFormat`) — never by manual string building or hardcoded separators.
+- **Pluralization & gender**: Use ICU message syntax (`plural`, `select`) with named
+  placeholders — never string concatenation to assemble sentences.
+- **RTL / bidi safety**: Prefer `EdgeInsetsDirectional` and `start`/`end` over `left`/`right`;
+  avoid layouts that assume left-to-right reading order.
+- **Text growth**: Do not assume translated strings fit a fixed width or single line; allow
+  wrapping/overflow handling.
+
+### Severity guidance for i18n findings
+- Hardcoded user-facing string, or missing `localizationsDelegates`/`supportedLocales` →
+  **⚠️ Warning**.
+- Directional layout leak (`left`/`right` in a translatable UI) → **⚠️ Warning**.
+- Manual date/number/currency formatting instead of `intl` → **💡 Suggestion**.
+
+---
+
+## Future Review Dimensions (not yet enforced)
+
+These dimensions are recognized as industry-standard but are intentionally **out of scope**
+for the current review definition. Do not fail a review for them; note them as future work:
+
+- **Testing standards** — coverage thresholds, `bloc_test` per BLoC, widget/golden/integration tests.
+- **Accessibility** — `Semantics`/`semanticLabel`, color contrast, ≥48dp tap targets, text scaling.
+- **Mechanical boundary enforcement** — lint-enforced Clean Architecture import bans (vs. review-by-reading).

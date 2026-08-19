@@ -23,6 +23,7 @@ When asked to review code, run a code review, or execute `/code-review`:
    - **Data**: Models map to entities (`fromJson`, `toJson`), repositories catch low-level exceptions and map them to `Failure`s.
    - **Presentation**: BLoC pattern, zero business logic in widgets, immutable states & events.
    - **Performance**: Dispose all controllers/streams/timers, use `const` constructors on static subtrees.
+   - **i18n/l10n** (§5): No hardcoded user-facing strings, locale-aware formatting via `intl`, directional layout (`start`/`end`).
 3. **Format Output & Create Tickets**:
    - Follow the report template in [.agents/skills/code-reviewer/templates/review_template.md](.agents/skills/code-reviewer/templates/review_template.md).
    - Automatically write actionable tickets to `.tickets/YYYY-MM-DD/TICKET-XXX-<name>.md` with status `OPEN`.
