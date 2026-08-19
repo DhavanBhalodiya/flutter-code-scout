@@ -6,10 +6,15 @@ This file instructs Claude / Claude Code CLI on how to interact with this projec
 
 ## 🛠️ Common Commands
 
+- **Plan & Design Feature**: `/plan-feature <FeatureName> [OptionalDescriptionOrJson]`
+- **Scaffold Vertical Slice**: `/api-to-feature <FeatureName>` (95% token savings, reads `schema_input.json`)
+- **Generate Models from JSON**: `/api-to-model <EntityName> [OptionalFile]`
+- **Run Code Review**: `/code-review`
+- **Pre-Launch Release Audit**: `/ship`
 - **Run Static Analysis**: `flutter analyze`
 - **Run Unit Tests**: `flutter test`
 - **Run Code Review Pre-Audit**: `./.agents/skills/code-reviewer/scripts/audit_code.sh`
-- **Generate Models from JSON**: `/api-to-model <EntityName> [OptionalFile]` (reads `schema_input.json` by default)
+- **Run Pre-Release Audit**: `./.agents/skills/ship/scripts/pre_release_audit.sh`
 - **Run App**: `flutter run`
 
 ---

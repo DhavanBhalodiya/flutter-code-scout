@@ -1,47 +1,167 @@
-# 🛡️ Flutter Code Review Agent & Ticket System
+# 🛡️ Flutter Code Scout: Full-Lifecycle AI Agent System
 
-An intelligent, automated **Code Review Pair-Programmer & Ticket Management System** tailored for Flutter & Dart applications. Built with **Antigravity Customizations**, **Clean Architecture Enforcement**, and cross-platform compatibility for **Claude Code CLI**, **Cursor**, and **CI/CD pipelines**.
+An intelligent, autonomous **Clean Architecture Pair-Programmer, Scaffolder, Code Reviewer & Release System** tailored for Flutter & Dart applications. Built with **Antigravity Customizations**, **Deterministic Scaffolding**, and cross-platform compatibility for **Claude Code CLI**, **Cursor**, and **CI/CD pipelines**.
+
+---
+
+```
+  PLAN                BUILD              TEST            REVIEW            SHIP
+ ┌──────────────┐    ┌──────────────┐   ┌────────────┐   ┌────────────┐   ┌────────────┐
+ │ Feature Plan │───▶│ 100% Slice   │───│ Auto Tests │──▶│ Health &   │──▶│ Pre-Launch │
+ │ & State Spec │    │ & UI Screen  │   │ Model/BLoC │   │ .tickets/  │   │ Audit Gate │
+ └──────────────┘    └──────────────┘   └────────────┘   └────────────┘   └────────────┘
+  /plan-feature       /api-to-feature    flutter test     /code-review        /ship
+```
+
+---
+
+## ⚡ Slash Command Reference
+
+| SDLC Phase | Slash Command | Action | Key Output |
+| :--- | :--- | :--- | :--- |
+| 🗺️ **PLAN** | **`/plan-feature <Name>`** | Architectural blueprint, UI wireframe & BLoC state machine | `.plans/<name>.md`<br>`schema_input.json` |
+| ⚡ **BUILD** | **`/api-to-feature <Name>`** | Scaffolds 100% runnable Clean Architecture slice in 1 sec (95% token savings) | Domain, Data, BLoC, UI Screen, Tests, DI |
+| 📦 **MODEL** | **`/api-to-model <Name>`** | Crash-proof JSON parser, Domain Entity & Model unit tests | `entities/`, `models/`, model tests |
+| 🛡️ **REVIEW**| **`/code-review`** | Audits Clean Architecture, memory leaks, performance & security | Review Report + Health Score<br>`.tickets/YYYY-MM-DD/` |
+| 🔧 **FIX** | **`/fix-ticket <ID>`** | Autonomously resolves ticket, edits code, and verifies tests | Ticket marked `RESOLVED ✅` |
+| 🚢 **SHIP** | **`/ship`** | Pre-launch release inspection across Dart, Android, iOS & Security | Release Readiness Report<br>Build commands (`.aab`, `.ipa`) |
 
 ---
 
 ## 🚀 Key Highlights
 
-- **Automated Code Auditing**: Audits code for Clean Architecture compliance, memory leaks, performance traps, security leaks, and Dart/Flutter best practices.
-- **Smart Ticket Generation**: Automatically logs issues as structured tickets in `.tickets/YYYY-MM-DD/`.
-- **One-Command Auto-Fixing**: Resolve issues simply by telling the agent `"Fix ticket TICKET-001"` or running `/fix-ticket TICKET-001`.
-- **Instant Model Generator (`/api-to-model`)**: Paste JSON into `schema_input.json` and generate pure Domain Entities, Data Models, and Unit Tests in seconds.
-- **Universal Compatibility**: Works seamlessly in **Antigravity IDE (Google)**, **Claude Code CLI (Anthropic)**, and standard terminal/CI environments.
-- **Bundled Sample Project**: Comes pre-configured with a Clean Architecture media discovery app powered by the **100% free, keyless TVMaze API** for immediate testing.
+- **Complete SDLC Coverage**: Seamless workflow from ideation (`/plan-feature`) to deterministic building (`/api-to-feature`), code auditing (`/code-review`), and release (`/ship`).
+- **95% Token Savings**: Hybrid Dart CLI synthesis engine generates 10 files in 1 second with ~150 tokens.
+- **100% Vertical Slice Generation**: Scaffolds Domain, Data, UseCase, BLoC, **UI Screen (with BlocProvider & Loading/Error states)**, **BLoC Unit Tests**, Model Tests, and Auto-DI.
+- **Automated Ticket System**: Organizes code review findings into trackable, date-stamped tickets in `.tickets/` with quantified health scores.
+- **One-Command Auto-Fixing**: Tell the agent `"Fix ticket TICKET-001"` to apply drop-in code fixes and re-verify zero regression.
+- **Pre-Launch Release Audit**: Inspects Android Manifest, Gradle target SDK, iOS Info.plist, secrets, and cleartext HTTP before publishing.
+- **Universal Compatibility**: Works out of the box in **Antigravity IDE (Google)**, **Claude Code CLI (Anthropic)**, and standard terminal/CI environments.
+- **Bundled Sample Project**: Pre-configured with a Clean Architecture media discovery app powered by the **100% free, keyless TVMaze API**.
 
 ---
 
 ## ⚡ Quickstart
 
 ### 🤖 If using Google Antigravity IDE:
-1. Open this repository in Antigravity.
-2. In the AI chat, run:
-   ```text
-   /code-review
-   ```
-3. To resolve any generated ticket, prompt:
-   ```text
-   Fix ticket TICKET-002
-   ```
+```text
+1. /plan-feature ShowReviews "User reviews and rating breakdown for TV shows"
+2. /api-to-feature ShowReviews
+3. /code-review
+4. Fix ticket TICKET-001
+5. /ship
+```
 
 ### 💻 If using Anthropic Claude Code CLI:
-1. In your terminal, navigate to the folder and launch Claude:
-   ```bash
-   claude
-   ```
-2. Use the native slash commands:
-   ```text
-   /code-review
-   /fix-ticket TICKET-002
-   ```
+```bash
+# Launch Claude in project root
+claude
+
+# Run native slash commands:
+/plan-feature ShowReviews "User reviews and rating breakdown"
+/api-to-feature ShowReviews
+/code-review
+/fix-ticket TICKET-001
+/ship
+```
 
 ---
 
-# 🛡️ Part 1: Automated Code Review & Ticket System
+# 🗺️ Phase 1: Feature Planning (`/plan-feature`)
+
+Plan and design a complete, production-grade **Clean Architecture Feature Blueprint** before writing code. Automatically generates UI wireframes, BLoC state machines, data contracts, and test plans in `.plans/<name>.md`, then syncs the mock API payload to `schema_input.json`.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 1. Run in Chat / CLI:                                       │
+│    /plan-feature ShowReviews "User reviews and ratings"     │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. Automatically Generated Blueprint:                       │
+│    ├── .plans/show_reviews.md                               │
+│    │   ├── 📱 UI Wireframe & Screen Hierarchy (Material 3)  │
+│    │   ├── 🔄 BLoC Events & State Transition Matrix         │
+│    │   ├── 🌐 API Schema Contract & Crash-Safe Types        │
+│    │   └── 🧪 Unit & BLoC Test Coverage Strategy            │
+│    └── schema_input.json (Auto-populated with mock payload) │
+└──────────────────────────────┬──────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. 1-Click Instant Scaffolding (1 Second, 95% Token Saved): │
+│    /api-to-feature ShowReviews                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 💻 Usage Options:
+```bash
+# Option 1: Feature name only (Infers best-practice Clean Architecture)
+/plan-feature ShowReviews
+
+# Option 2: Feature name + user requirements (Recommended)
+/plan-feature UserProfile "User profile screen with avatar, stats, watch history, and edit profile action"
+
+# Option 3: Feature name + raw sample API JSON response
+/plan-feature EpisodeGuide [{"id": 101, "season": 1, "number": 1, "name": "Pilot", "rating": 8.7}]
+```
+
+---
+
+# ⚡ Phase 2: Full-Stack Scaffolder (`/api-to-feature`)
+
+Turn any raw API JSON response into a complete, runnable **Clean Architecture Vertical Slice** in **1 second** using our hybrid deterministic engine.
+
+```bash
+/api-to-feature ShowCast
+```
+
+### 📦 The 10 Generated Artifacts (+ Auto-DI Injection):
+```text
+lib/
+├── domain/
+│   ├── entities/show_cast.dart                     # 1. Equatable Domain Entity
+│   ├── repositories/show_cast_repository.dart      # 2. Repository Contract
+│   └── usecases/get_show_cast.dart                 # 3. Domain UseCase
+├── data/
+│   ├── models/show_cast_model.dart                 # 4. Null-Safe Data Model
+│   ├── datasources/show_cast_remote_data_source.dart# 5. Remote DataSource Impl
+│   └── repositories/show_cast_repository_impl.dart # 6. Repository Implementation
+├── presentation/
+│   ├── blocs/show_cast/                            # 7. Event, State & BLoC
+│   └── screens/show_cast_screen.dart               # 8. Complete UI Screen (Provider + Builder)
+├── core/di/injection_container.dart             # 9. Auto-injected GetIt DI
+test/
+├── data/models/show_cast_model_test.dart           # 10. Model Serialization Unit Tests
+└── presentation/blocs/show_cast_bloc_test.dart     # 11. BLoC Stream Unit Tests
+```
+
+---
+
+# 📦 Phase 3: Instant Model Generator (`/api-to-model`)
+
+Turn any raw API JSON response into production-grade **Clean Architecture Domain Entities**, **Data Models**, and **Unit Tests** in seconds with zero boilerplate.
+
+```bash
+# Reads schema_input.json by default:
+/api-to-model ActorListResponse
+
+# Custom mock file:
+/api-to-model OrderDetails assets/mocks/sample_order.json
+
+# Inline JSON payload:
+/api-to-model Product {"id": 101, "title": "Headphones", "price": 99.99}
+```
+
+### 💡 Crash-Proof Type Safety:
+- **Automatic Numeric Coercion**: Maps `int` vs `double` safely using `(json['key'] as num?)?.toDouble()`. No runtime `TypeError` crashes.
+- **Auto-Sanitization**: Strips HTML tags from API strings automatically.
+- **Deep Nested Mapping**: Flattens nested JSON structures into null-safe domain properties.
+
+---
+
+# 🛡️ Phase 4: Automated Code Review & Tickets (`/code-review`)
 
 ## 🏛️ How Code Review Works Under the Hood
 
@@ -73,26 +193,20 @@ An intelligent, automated **Code Review Pair-Programmer & Ticket Management Syst
                                └─────────────────────────────┘
 ```
 
----
-
-## 💻 Available Review Commands
-
-You can invoke the code reviewer directly from your chat prompt:
-
+### 💻 Available Review Commands:
 | Command | Action |
 | :--- | :--- |
-| **`/code-review`** | Runs pre-audit checks (`flutter analyze` + `test`), audits all architectural layers, and outputs a full health score report. |
-| **`/code-review lib/presentation/`** | Performs a targeted audit on the presentation layer (memory leaks, controller disposal, const constructors). |
-| **`/code-review lib/data/models/movie_model.dart`** | Performs a deep inspection on a specific file. |
-| **`/code-review git diff`** | Reviews only current staged and uncommitted changes before you commit. |
+| **`/code-review`** | Full repository audit (`flutter analyze` + `test` + architecture + tickets). |
+| **`/code-review lib/presentation/`** | Targeted audit on UI layer (memory leaks, controller disposal, const constructors). |
+| **`/code-review lib/data/models/movie_model.dart`** | Deep inspection on a specific file. |
+| **`/code-review git diff`** | Reviews uncommitted changes before you commit. |
 
 ---
 
 ## 🎫 The Automated Ticket System (`.tickets/`)
 
-Whenever the review agent detects issues (**Blockers**, **Warnings**, or **Suggestions**), it automatically organizes them into date-stamped tickets:
+Whenever the review agent detects issues, it automatically organizes them into date-stamped tickets:
 
-### Directory Structure:
 ```text
 .tickets/
 └── 2026-08-18/
@@ -102,91 +216,45 @@ Whenever the review agent detects issues (**Blockers**, **Warnings**, or **Sugge
     └── TICKET-003-const-optimizations-search-screen.md# 💡 Suggestion (OPEN)
 ```
 
-### Ticket Structure:
-Every ticket contains:
-1. **Severity Badge**: `🚨 BLOCKER`, `⚠️ WARNING`, or `💡 SUGGESTION`.
-2. **Status**: `OPEN` ➡️ `RESOLVED` ✅.
-3. **Problem Description**: Root cause and impact.
-4. **Action Plan & Diff**: Exact proposed code changes.
-5. **Verification Command**: Automated validation step (`flutter analyze`, `flutter test`).
-
----
-
-## 🛠️ How to Resolve Tickets
-
-You don't need to manually write fixes. Simply prompt the agent:
-
+### 🛠️ How to Resolve Tickets:
 - **Fix a specific ticket**:
   > *"Fix ticket TICKET-002"* or `/fix-ticket TICKET-002`
 - **Fix all open tickets**:
   > *"Fix all open tickets in .tickets/2026-08-18/"*
 
 The agent will:
-1. Read the ticket instructions.
-2. Edit the target file with the drop-in fix.
+1. Read ticket instructions.
+2. Edit target files with drop-in fixes.
 3. Run `flutter analyze` & `flutter test` to verify zero regression.
-4. Update the ticket status to **`RESOLVED`** ✅.
+4. Mark ticket status **`RESOLVED`** ✅.
 
 ---
 
-# ⚡ Part 2: Productivity Tools
+# 🚢 Phase 5: Pre-Launch Release Inspector (`/ship`)
 
-## 📦 Instant Model Generator: `/api-to-model <EntityName>`
-
-Turn any raw API JSON response into production-grade **Clean Architecture Domain Entities**, **Data Models**, and **Unit Tests** in seconds with zero boilerplate.
-
-### 📋 3-Step Simple Workflow:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ 1. Paste API JSON response into:                            │
-│    `schema_input.json`                                      │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ 2. Run in Chat / CLI:                                       │
-│    `/api-to-model <EntityName>`                             │
-│    (e.g., `/api-to-model ActorListResponse`)                │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-                               ▼
-┌─────────────────────────────────────────────────────────────┐
-│ 3. Automatically Generated (0 Boilerplate):                 │
-│    ├── lib/domain/entities/<name>.dart (Pure & Equatable)   │
-│    ├── lib/data/models/<name>_model.dart (Null-Safe JSON)   │
-│    └── test/data/models/<name>_model_test.dart (Unit Tests) │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 💡 Why this is a Superpower:
-- **🛡️ 100% Crash-Proof Type Safety**: Automatically maps `int` vs `double` safely using `(json['key'] as num?)?.toDouble()`. No more runtime `TypeError` crashes.
-- **🧹 Auto-Sanitization**: Strips HTML tags from API strings automatically.
-- **🔗 Deep Nested Maps**: Flattens nested JSON objects (e.g. `network.country.name`) into clean, null-safe properties.
-- **🧪 100% Test Coverage**: Creates ready-to-run serialization tests (`flutter test`) automatically.
-
-### 💻 Usage Examples:
+Automates comprehensive multi-platform pre-flight verification before publishing to the App Store or Google Play.
 
 ```bash
-# Option 1: Reads schema_input.json by default (Easiest & Recommended)
-/api-to-model ActorListResponse
-
-# Option 2: Reads a custom mock file path
-/api-to-model OrderDetails assets/mocks/sample_order.json
-
-# Option 3: Quick inline JSON
-/api-to-model Product {"id": 101, "title": "Headphones", "price": 99.99}
+/ship
 ```
+
+### 📋 What `/ship` Audits:
+- 🧪 **Quality Gates**: `flutter analyze` (0 errors/warnings) & `flutter test` (100% test pass).
+- 📦 **App Versioning**: Validates `version: X.Y.Z+BuildNumber` format in `pubspec.yaml`.
+- 🤖 **Android Platform**: Verifies permissions and flags cleartext traffic risks in `AndroidManifest.xml`.
+- 🍎 **iOS Platform**: Verifies privacy descriptions and App Transport Security in `Info.plist`.
+- 🔒 **Security Scan**: Detects hardcoded localhost/staging URLs (`http://`) and exposed credentials in `lib/`.
+- 🚀 **Release Commands**: Outputs ready-to-run release build commands (`flutter build appbundle --release`, `flutter build ipa --release`).
 
 ---
 
 # 🔍 Part 3: Architecture & Quality Guidelines
 
-The agent audits against the rules configured in [`.agents/rules/flutter_clean_architecture.md`](.agents/rules/flutter_clean_architecture.md):
+Audited against [`.agents/rules/flutter_clean_architecture.md`](.agents/rules/flutter_clean_architecture.md):
 
 ### 1. Clean Architecture Layer Purity
-- **Domain Layer (`lib/domain/`)**: Pure Dart only. Zero imports from `flutter/material.dart`, `dio`, `sqflite`, or `data/`. All entities extend `Equatable`.
-- **Data Layer (`lib/data/`)**: Robust JSON serialization (`fromJson`/`toJson`), exception-to-failure mappings, and decoupled datasources.
+- **Domain Layer (`lib/domain/`)**: Pure Dart only. Zero dependencies on UI/Dio/Sqflite. All entities extend `Equatable`.
+- **Data Layer (`lib/data/`)**: Robust JSON serialization (`fromJson`/`toJson`), exception-to-failure mappings, decoupled datasources.
 - **Presentation Layer (`lib/presentation/`)**: BLoC state management with immutable states/events and zero business logic in widgets.
 
 ### 2. Flutter Performance & Memory Safety
@@ -195,7 +263,7 @@ The agent audits against the rules configured in [`.agents/rules/flutter_clean_a
 
 ### 3. Security & Resilience
 - Flags hardcoded secrets, credentials, or insecure storage.
-- Ensures all async operations handle network timeouts and server errors gracefully.
+- Ensures async operations handle network timeouts and server errors gracefully.
 
 ---
 
@@ -203,17 +271,6 @@ The agent audits against the rules configured in [`.agents/rules/flutter_clean_a
 
 | Tool / Environment | How It Integrates |
 | :--- | :--- |
-| **Antigravity IDE (Google)** | Automatically loads [`.agents/skills/code-reviewer/`](.agents/skills/code-reviewer/SKILL.md), [`.agents/skills/api-to-model/`](.agents/skills/api-to-model/SKILL.md), and [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md). |
+| **Antigravity IDE (Google)** | Automatically loads [`.agents/skills/`](.agents/skills/) and [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md). |
 | **Claude Code CLI (Anthropic)** | Reads [`CLAUDE.md`](CLAUDE.md) and uses native slash commands in [`.claude/commands/`](.claude/commands/). |
-| **Terminal / CI/CD Pipelines** | Directly executes [`./.agents/skills/code-reviewer/scripts/audit_code.sh`](.agents/skills/code-reviewer/scripts/audit_code.sh). |
-
----
-
-## 🧪 Verification & Audit Script
-
-You can manually run the pre-audit suite in your terminal anytime:
-
-```bash
-# Run automated pre-audit checks
-./.agents/skills/code-reviewer/scripts/audit_code.sh
-```
+| **Terminal / CI/CD Pipelines** | Executes [`./.agents/skills/code-reviewer/scripts/audit_code.sh`](.agents/skills/code-reviewer/scripts/audit_code.sh) and [`./.agents/skills/ship/scripts/pre_release_audit.sh`](.agents/skills/ship/scripts/pre_release_audit.sh). |
