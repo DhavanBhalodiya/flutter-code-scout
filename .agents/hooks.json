@@ -1,0 +1,17 @@
+{
+  "clean-arch-guard": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "dart ./scripts/ast_arch_linter.dart",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

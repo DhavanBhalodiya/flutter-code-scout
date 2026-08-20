@@ -42,6 +42,17 @@ else
 fi
 
 echo ""
+echo "1b. Checking AST Clean Architecture Boundaries..."
+SCRIPT_DIR_SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ARCH_TARGET="${SCOPE:-lib}"
+if dart "$SCRIPT_DIR_SELF/../../../scripts/ast_arch_linter.dart" "$ARCH_TARGET"; then
+  echo "✅ AST Architecture check passed."
+else
+  fail=1
+  echo "❌ Clean Architecture boundary violations detected."
+fi
+
+echo ""
 echo "2. Checking Test Suite..."
 if [ -n "$SCOPE" ]; then
   flutter test "$SCOPE" || { fail=1; test_result="fail"; }

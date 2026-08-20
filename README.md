@@ -271,6 +271,37 @@ Audited against [`.agents/rules/flutter_clean_architecture.md`](.agents/rules/fl
 
 | Tool / Environment | How It Integrates |
 | :--- | :--- |
-| **Antigravity IDE (Google)** | Automatically loads [`.agents/skills/`](.agents/skills/) and [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md). |
+| **Antigravity IDE (Google)** | Automatically loads [`.agents/skills/`](.agents/skills/), [`.agents/rules/`](.agents/rules/flutter_clean_architecture.md), and [`.agents/hooks.json`](.agents/hooks.json). |
 | **Claude Code CLI (Anthropic)** | Reads [`CLAUDE.md`](CLAUDE.md) and uses native slash commands in [`.claude/commands/`](.claude/commands/). |
-| **Terminal / CI/CD Pipelines** | Executes [`./.agents/skills/code-reviewer/scripts/audit_code.sh`](.agents/skills/code-reviewer/scripts/audit_code.sh) and [`./.agents/skills/ship/scripts/pre_release_audit.sh`](.agents/skills/ship/scripts/pre_release_audit.sh). |
+| **Terminal / CI/CD Pipelines** | Executes [`./.agents/scripts/check_architecture.sh`](.agents/scripts/check_architecture.sh), [`./.agents/skills/code-reviewer/scripts/audit_code.sh`](.agents/skills/code-reviewer/scripts/audit_code.sh), and [`./.agents/skills/ship/scripts/pre_release_audit.sh`](.agents/skills/ship/scripts/pre_release_audit.sh). |
+
+---
+
+# 🛡️ Part 5: Deterministic AST Architecture Guard & Lifecycle Hooks
+
+This repository is equipped with an automated **0-Token AST Architecture Linter Hook** ([`.agents/hooks.json`](.agents/hooks.json)) that continuously protects Clean Architecture layer purity in real time.
+
+```
+AI Edit / Tool Call ──▶ [PreToolUse Hook] ──▶ AST Boundary Check (<10ms) ──▶ Allowed / Denied 🚫
+```
+
+### 🧱 Enforced Layer Boundaries:
+
+| Layer | Prohibited Imports & Leakages | Purpose |
+| :--- | :--- | :--- |
+| **Domain** (`lib/domain/`) | `package:flutter/*`, `package:dio/*`, `package:sqflite/*`, `lib/data/*`, `lib/presentation/*` | Pure Dart business logic & entities. |
+| **Data** (`lib/data/`) | `lib/presentation/*`, `package:flutter/material.dart`, `package:flutter/cupertino.dart` | Decoupled data models & data sources. |
+| **Presentation** (`lib/presentation/`) | Direct DataSources, direct `Dio` clients, raw database drivers | UI interacts strictly via UseCases & BLoC. |
+| **Core** (`lib/core/`) | `lib/presentation/pages/*`, `lib/presentation/screens/*` | Shared utilities stay decoupled from specific UI screens. |
+
+### 💻 Manual CLI & CI/CD Architecture Audit:
+Developers and CI/CD pipelines can run the architecture check across the whole codebase anytime:
+
+```bash
+# Run standalone AST boundary audit:
+./.agents/scripts/check_architecture.sh
+
+# Or run the full pre-audit pipeline (Static analysis + AST check + Tests):
+./.agents/skills/code-reviewer/scripts/audit_code.sh
+```
+

@@ -15,6 +15,7 @@ This file instructs Claude / Claude Code CLI on how to interact with this projec
 - **Run Unit Tests**: `flutter test`
 - **Run Code Review Pre-Audit**: `./.agents/skills/code-reviewer/scripts/audit_code.sh`
 - **Run Pre-Release Audit**: `./.agents/skills/ship/scripts/pre_release_audit.sh`
+- **Run AST Clean Architecture Audit**: `./.agents/scripts/check_architecture.sh`
 - **Run App**: `flutter run`
 
 ---
